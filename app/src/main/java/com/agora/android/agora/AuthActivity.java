@@ -1,30 +1,28 @@
 package com.agora.android.agora;
 
 import android.content.Intent;
-import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class AuthActivity extends AppCompatActivity {
 
-    private static final int RC_SIGN_IN = 0;
-    private static final int RC_EXIT = 1;
+    private static final int REQUEST_CODE_SIGN_IN = 0;
+    private static final int REQUEST_CODE_DASHBOARD = 1;
     private static String RESULT_SIGN_IN_FAIL;
+    public static final String EXTRA_GOOGLE_SIGN_IN_CLIENT = "com.agora.android.agora.google_sign_in_client";
+
     private GoogleSignInClient mGoogleSignInClient;
-//    private SignInButton mGoogleSignInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,16 +39,6 @@ public class AuthActivity extends AppCompatActivity {
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-//        mGoogleSignInButton = findViewById(R.id.sign_in_button);
-//        mGoogleSignInButton.setSize(SignInButton.SIZE_STANDARD);
-//
-//        mGoogleSignInButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                signIn();
-//            }
-//        });
-
     }
 
     @Override
@@ -60,22 +48,20 @@ public class AuthActivity extends AppCompatActivity {
         // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         updateUI(account);
-
     }
 
-    private void updateUI(GoogleSignInAccount gsiAccount) {
-        if (gsiAccount == null) {
+    private void updateUI(GoogleSignInAccount googleSignInAccount) {
+        if (googleSignInAccount == null) {
             signIn();
         } else {
-            Intent dashboardIntent = new Intent(this, DashboardActivity.class);
-            dashboardIntent.putExtra("Account",  (Parcelable) gsiAccount);
-            startActivityForResult(dashboardIntent, RC_EXIT);
+            Intent dashboardIntent = DashboardActivity.newIntent(this, googleSignInAccount);
+            startActivityForResult(dashboardIntent, REQUEST_CODE_DASHBOARD);
         }
     }
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        startActivityForResult(signInIntent, REQUEST_CODE_SIGN_IN);
     }
 
     @Override
@@ -84,15 +70,29 @@ public class AuthActivity extends AppCompatActivity {
 
         switch (requestCode) {
             // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-            case RC_SIGN_IN:
+            case REQUEST_CODE_SIGN_IN:
                 // The Task returned from this call is always completed, no need to attach
                 // a listener.
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                 handleSignInResult(task);
                 break;
-            case RC_EXIT:
+            case REQUEST_CODE_DASHBOARD:
+                if (resultCode == RESULT_OK) {
+                    signOut();
+                }
                 finish();
         }
+    }
+
+    private void signOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(AuthActivity.this,
+                                "Successfully signed out!", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
