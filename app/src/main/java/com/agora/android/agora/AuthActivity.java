@@ -32,7 +32,7 @@ public class AuthActivity extends AppCompatActivity {
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.google_oauth_client_id))
+                //.requestIdToken(getString(R.string.google_oauth_client_id))
                 .requestEmail()
                 .build();
 
@@ -51,12 +51,12 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     private void updateUI(GoogleSignInAccount googleSignInAccount) {
-        if (googleSignInAccount == null) {
-            signIn();
-        } else {
+//        if (googleSignInAccount == null) {
+//            signIn();
+//        } else {
             Intent dashboardIntent = DashboardActivity.newIntent(this, googleSignInAccount);
             startActivityForResult(dashboardIntent, REQUEST_CODE_DASHBOARD);
-        }
+//        }
     }
 
     private void signIn() {

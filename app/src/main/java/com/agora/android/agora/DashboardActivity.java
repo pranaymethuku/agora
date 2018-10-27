@@ -46,7 +46,7 @@ public class DashboardActivity extends AppCompatActivity {
                 .getParcelableExtra(EXTRA_GOOGLE_ACCOUNT);
 
         mWelcomeMessage = (TextView) findViewById(R.id.welcome_message);
-        mWelcomeMessage.setText(gsiAccount.getDisplayName());
+//        mWelcomeMessage.setText(gsiAccount.getDisplayName());
 
         mSignOutButton = (Button) findViewById(R.id.button_sign_out);
         mSignOutButton.setOnClickListener(new View.OnClickListener() {
