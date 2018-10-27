@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="MissingDefaultResource">
 
     <item
         android:id="@+id/nav_map"
         android:title="Map"
-        android:icon="@drawable/map_icon" />
+        android:icon="@drawable/ic_map" />
     <item
         android:id="@+id/nav_dashboard"
         android:title="Dashboard"
-        android:icon="@drawable/dash_icon"/>
+        android:icon="@drawable/ic_dashboard"/>
     <item
         android:id="@+id/nav_settings"
         android:title="Settings"
-        android:icon="@drawable/settings_icon" />
+        android:icon="@drawable/ic_settings" />
 </menu>
