@@ -78,22 +78,22 @@ public class AuthActivity extends AppCompatActivity {
                 break;
             case REQUEST_CODE_DASHBOARD:
                 if (resultCode == RESULT_OK) {
-//                    signOut();
+                    signOut();
                 }
                 finish();
         }
     }
 
-//    private void signOut() {
-//        mGoogleSignInClient.signOut()
-//                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        Toast.makeText(AuthActivity.this,
-//                                "Successfully signed out!", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//    }
+    private void signOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(AuthActivity.this,
+                                "Successfully signed out!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
