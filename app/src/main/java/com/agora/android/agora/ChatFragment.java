@@ -13,51 +13,35 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
+//import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+//import com.google.firebase.database.FirebaseDatabase;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Chat.OnFragmentInteractionListener} interface
+ * {@link ChatFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Chat#newInstance} factory method to
+ * Use the {@link ChatFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Chat extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class ChatFragment extends Fragment {
+    private static String ARG_GOOGLE_SIGN_IN_ACCOUNT = "com.agora.android.agora.google_sign_in_account";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private GoogleSignInAccount mGoogleSignInAccount;
     private OnFragmentInteractionListener mListener;
 
-    private FirebaseListAdapter<ChatMessage> adapter;
+//    private FirebaseListAdapter<ChatMessage> adapter;
 
-    public Chat() {
+    public ChatFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Chat.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Chat newInstance(String param1, String param2) {
-        Chat fragment = new Chat();
+    public static ChatFragment newInstance(GoogleSignInAccount googleSignInAccount) {
+        ChatFragment fragment = new ChatFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable(ARG_GOOGLE_SIGN_IN_ACCOUNT, googleSignInAccount);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,8 +50,7 @@ public class Chat extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mGoogleSignInAccount = getArguments().getParcelable(ARG_GOOGLE_SIGN_IN_ACCOUNT);
         }
 
     }
@@ -88,17 +71,16 @@ public class Chat extends Fragment {
 
                 // Read the input field and push a new instance
                 // of ChatMessage to the Firebase database
-                FirebaseDatabase.getInstance()
-                        .getReference()
-                        .push()
-                        .setValue(new ChatMessage(input.getText().toString(),
-                                FirebaseAuth.getInstance()
-                                        .getCurrentUser()
-                                        .getDisplayName())
-                        );
+//                FirebaseDatabase.getInstance()
+//                        .getReference()
+//                        .push()
+//                        .setValue(new ChatMessage(input.getText().toString(),
+//                                mGoogleSignInAccount.getId())
+//                        );
 
                 // Clear the input
-                input.setText("");
+//                input.setText("");
+////                input.
             }
         });
 
@@ -108,26 +90,26 @@ public class Chat extends Fragment {
     private void displayChatMessages() {
         View view = getView();
         ListView listOfMessages = (ListView) view.findViewById(R.id.list_of_messages);
+//
+//        adapter = new FirebaseListAdapter<ChatMessage>(getActivity(), ChatMessage.class, R.layout.messages, FirebaseDatabase.getInstance().getReference()) {
+//            @Override
+//            protected void populateView(View v, ChatMessage model, int position) {
+//                // Get references to the views of message.xml
+//                TextView messageText = (TextView)v.findViewById(R.id.message_text);
+//                TextView messageUser = (TextView)v.findViewById(R.id.message_user);
+//                TextView messageTime = (TextView)v.findViewById(R.id.message_time);
+//
+//                // Set their text
+//                messageText.setText(model.getMessageText());
+//                messageUser.setText(model.getMessageUser());
+//
+//                // Format the date before showing it
+//                messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
+//                        model.getMessageTime()));
+//            }
+//        };
 
-        adapter = new FirebaseListAdapter<ChatMessage>(getActivity(), ChatMessage.class, R.layout.messages, FirebaseDatabase.getInstance().getReference()) {
-            @Override
-            protected void populateView(View v, ChatMessage model, int position) {
-                // Get references to the views of message.xml
-                TextView messageText = (TextView)v.findViewById(R.id.message_text);
-                TextView messageUser = (TextView)v.findViewById(R.id.message_user);
-                TextView messageTime = (TextView)v.findViewById(R.id.message_time);
-
-                // Set their text
-                messageText.setText(model.getMessageText());
-                messageUser.setText(model.getMessageUser());
-
-                // Format the date before showing it
-                messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
-                        model.getMessageTime()));
-            }
-        };
-
-        listOfMessages.setAdapter(adapter);
+//        listOfMessages.setAdapter(adapter);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -135,6 +117,11 @@ public class Chat extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+
+    public OnFragmentInteractionListener getListener() {
+        return mListener;
     }
 
     @Override

@@ -1,39 +1,33 @@
 package com.agora.android.agora;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 import java.util.Date;
 
 public class ChatMessage {
 
-    private String messageText;
-    private String messageUser;
+    private String mMessageText;
+    private String mMessageUserID;
     private long messageTime;
 
-    public ChatMessage(String messageText, String messageUser) {
-        this.messageText = messageText;
-        this.messageUser = messageUser;
+    public ChatMessage(String messageText, String messageUserID) {
+        mMessageText = messageText;
+        mMessageUserID = messageUserID;
 
         // Initialize to current time
         messageTime = new Date().getTime();
     }
 
-    public ChatMessage(){
-
-    }
-
     public String getMessageText() {
-        return messageText;
+        return mMessageText;
     }
 
     public void setMessageText(String messageText) {
-        this.messageText = messageText;
+        mMessageText = messageText;
     }
 
     public String getMessageUser() {
-        return messageUser;
-    }
-
-    public void setMessageUser(String messageUser) {
-        this.messageUser = messageUser;
+        return mMessageUserID;
     }
 
     public long getMessageTime() {

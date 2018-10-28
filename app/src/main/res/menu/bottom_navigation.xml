@@ -14,10 +14,10 @@
         android:icon="@drawable/ic_dashboard"/>
     <!--<item-->
         <!--android:id="@+id/nav_chat"-->
-        <!--android:title="Chat"-->
+        <!--android:title="ChatFragment"-->
         <!--android:icon="@drawable/ic_dashboard"/>-->
     <item
-        android:id="@+id/nav_settings"
-        android:title="Settings"
-        android:icon="@drawable/ic_settings" />
+        android:id="@+id/nav_chat"
+        android:title="Chat"
+        android:icon="@drawable/ic_chat" />
 </menu>
