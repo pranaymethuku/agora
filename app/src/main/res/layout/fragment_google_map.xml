@@ -1,29 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <AutoCompleteTextView
         android:id="@+id/addressText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
         android:ems="10"
+        android:hint="Enter Address"
         android:inputType="textPersonName"
-        android:text="Enter Address" />
+        android:textSize="22sp" />
 
-    <RelativeLayout
+    <com.google.android.gms.maps.MapView
         android:id="@+id/sub_fragment_map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|center_vertical" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/confirmButton"
+        android:layout_below="@+id/addressText"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp" />
 
     <Button
         android:id="@+id/confirmButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
+        android:layout_marginBottom="0dp"
         android:text="Confirm Location" />
 
-</FrameLayout>
+</RelativeLayout>
