@@ -10,26 +10,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class DashboardFragment extends Fragment {
 
     private TextView mWelcomeMessage;
-    private GoogleSignInAccount mGoogleSignInAccount;
-    private static String ARG_GOOGLE_SIGN_IN_ACCOUNT = "com.agora.android.agora.google_sign_in_account";
 
-    public static Fragment newInstance(GoogleSignInAccount googleSignInAccount) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(ARG_GOOGLE_SIGN_IN_ACCOUNT, googleSignInAccount);
-
-        DashboardFragment fragment = new DashboardFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mGoogleSignInAccount = (GoogleSignInAccount) getArguments().getParcelable(ARG_GOOGLE_SIGN_IN_ACCOUNT);
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
 
     }
 
@@ -39,7 +36,7 @@ public class DashboardFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         mWelcomeMessage = (TextView) view.findViewById(R.id.welcome_message);
-        mWelcomeMessage.setText(mGoogleSignInAccount.getDisplayName());
+        mWelcomeMessage.setText(mFirebaseUser.getDisplayName());
 
         return view;
     }
