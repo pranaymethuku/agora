@@ -136,12 +136,10 @@ public class GoogleMapFragment extends Fragment {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(placeLtG!=null)
-                {
+                if(placeLtG!=null) {
                     finalLatLng=placeLtG;
                 }
-                else
-                {
+                else {
                     finalLatLng=new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
                 }
             }
@@ -183,13 +181,12 @@ public class GoogleMapFragment extends Fragment {
         @Override
         public void onResult(@NonNull PlaceBuffer places) {
             if(!places.getStatus().isSuccess()){
-
                 places.release();
                 return;
             }
             final Place place = places.get(0);
             placeLtG=place.getLatLng();
-            mGoogleMap.addMarker(new MarkerOptions().position(placeLtG).title("You are here currently"));
+            mGoogleMap.addMarker(new MarkerOptions().position(placeLtG).title("Your are here currently"));
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(placeLtG,19),2000,null);
             places.release();
         }

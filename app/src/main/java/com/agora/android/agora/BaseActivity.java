@@ -100,6 +100,10 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.O
                 .build();
     }
 
+    public GoogleApiClient getGoogleApiClient() {
+        return mGoogleApiClient;
+    }
+
     private Fragment getItemFragment(MenuItem item) {
         Fragment itemFragment = null;
         switch (item.getItemId()) {
