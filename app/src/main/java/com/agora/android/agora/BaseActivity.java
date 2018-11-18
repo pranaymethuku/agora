@@ -61,6 +61,13 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.O
             return;
         }
 
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .addApi(Auth.GOOGLE_SIGN_IN_API)
+                .build();
+
         final FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 
@@ -91,13 +98,6 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.O
             }
 
         });
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .addApi(Auth.GOOGLE_SIGN_IN_API)
-                .build();
     }
 
     public GoogleApiClient getGoogleApiClient() {
@@ -111,7 +111,7 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.O
                 itemFragment = new DashboardFragment();
                 break;
             case R.id.nav_chat:
-                itemFragment = new ChatFragment();
+                itemFragment = new AllChatsFragment();
                 break;
             case R.id.nav_map:
                 Location location = getLastLocation();
