@@ -16,17 +16,25 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AuthActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
     // Final variables for logs and RCs
     private static final String TAG = "AuthActivity";
     private static final int REQUEST_CODE_SIGN_IN = 0;
+    private static final String USERS_CHILD = "users";
 
     // View related variables
     private SignInButton mSignInButton;
@@ -36,6 +44,7 @@ public class AuthActivity extends AppCompatActivity implements GoogleApiClient.O
 
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
+    private FirebaseFirestore mFirebaseFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +71,7 @@ public class AuthActivity extends AppCompatActivity implements GoogleApiClient.O
 
         // Initialize FirebaseAuth
         mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseFirestore = FirebaseFirestore.getInstance();
 
     }
 
@@ -98,7 +108,7 @@ public class AuthActivity extends AppCompatActivity implements GoogleApiClient.O
         }
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGooogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mFirebaseAuth.signInWithCredential(credential)
@@ -111,10 +121,31 @@ public class AuthActivity extends AppCompatActivity implements GoogleApiClient.O
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithCredential", task.getException());
+                            Log.e(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(AuthActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
+                            Map<String, Object> user = new HashMap<>();
+                            user.put("display_name", acct.getDisplayName());
+                            if (acct.getId() != null) {
+                                Log.i(TAG, "signInWithCredential: adding user to Firestore");
+                                mFirebaseFirestore.collection(USERS_CHILD)
+                                        .document(acct.getId())
+                                        .set(user)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void documentReference) {
+                                                Log.i(TAG, "addOnSuccessListener: Document added with ID: " + acct.getId());
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.e(TAG, "addOnFailureListener: Error adding document", e);
+                                            }
+                                        });
+                            }
+
                             startActivity(new Intent(AuthActivity.this, BaseActivity.class));
                             finish();
                         }
