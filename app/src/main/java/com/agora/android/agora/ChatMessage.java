@@ -6,35 +6,49 @@ import java.util.Date;
 
 public class ChatMessage {
 
-    private String mMessageText;
-    private String mMessageUserID;
-    private long messageTime;
+    private String id;
+    private String text;
+    private String name;
+    private String photoUrl;
 
-    public ChatMessage(String messageText, String messageUserID) {
-        mMessageText = messageText;
-        mMessageUserID = messageUserID;
-
-        // Initialize to current time
-        messageTime = new Date().getTime();
+    public ChatMessage() {
     }
 
-    public String getMessageText() {
-        return mMessageText;
+    public ChatMessage(String text, String name, String photoUrl) {
+        this.text = text;
+        this.name = name;
+        this.photoUrl = photoUrl;
     }
 
-    public void setMessageText(String messageText) {
-        mMessageText = messageText;
+    public String getId() {
+        return id;
     }
 
-    public String getMessageUser() {
-        return mMessageUserID;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public long getMessageTime() {
-        return messageTime;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public void setMessageTime(long messageTime) {
-        this.messageTime = messageTime;
+    public String getText() {
+        return text;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }
