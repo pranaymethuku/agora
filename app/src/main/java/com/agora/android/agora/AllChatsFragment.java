@@ -3,6 +3,7 @@ package com.agora.android.agora;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -62,7 +63,7 @@ public class AllChatsFragment extends Fragment {
 
         mFirestore = FirebaseFirestore.getInstance();
         final Query recentChats = mFirestore.collection(CHATS)
-                .document("1JtcGMQwt1IqFCaeSBPG")
+                .document(mFirebaseUser.getUid())
                 .collection(RECENT);
 
         SnapshotParser<ChatItem> parser = new SnapshotParser<ChatItem>() {
@@ -93,6 +94,14 @@ public class AllChatsFragment extends Fragment {
                     viewHolder.lastMessageTextView.setText(chatItem.getLastMessage());
                 }
                 viewHolder.messengerTextView.setText(chatItem.getName());
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final FragmentManager fm = getActivity().getSupportFragmentManager();
+                        fm.findFragmentById(R.id.fragment_container);
+                        fm.beginTransaction().replace(R.id.fragment_container, new ChatFragment()).commit();
+                    }
+                });
             }
 
             @NonNull
@@ -108,17 +117,17 @@ public class AllChatsFragment extends Fragment {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
-                int friendlyMessageCount = mFirestoreRecyclerAdapter.getItemCount();
-                int lastVisiblePosition =
-                        mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
-                // If the recycler view is initially being loaded or the
-                // user is at the bottom of the list, scroll to the bottom
-                // of the list to show the newly added message.
-                if (lastVisiblePosition == -1 ||
-                        (positionStart >= (friendlyMessageCount - 1) &&
-                                lastVisiblePosition == (positionStart - 1))) {
-                    mChatsRecyclerView.scrollToPosition(positionStart);
-                }
+//                int friendlyMessageCount = mFirestoreRecyclerAdapter.getItemCount();
+//                int lastVisiblePosition =
+//                        mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
+//                // If the recycler view is initially being loaded or the
+//                // user is at the bottom of the list, scroll to the bottom
+//                // of the list to show the newly added message.
+//                if (lastVisiblePosition == -1 ||
+//                        (positionStart >= (friendlyMessageCount - 1) &&
+//                                lastVisiblePosition == (positionStart - 1))) {
+//                    mChatsRecyclerView.scrollToPosition(positionStart);
+//                }
             }
         });
 
