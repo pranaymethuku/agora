@@ -126,8 +126,6 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     protected void onStart() {
         super.onStart();
-        // Check if user is signed in.
-        // TODO: Add code to check if user is signed in.
     }
 
     @Override
