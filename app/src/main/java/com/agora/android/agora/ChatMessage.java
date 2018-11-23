@@ -1,14 +1,10 @@
 package com.agora.android.agora;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-
-import java.util.Date;
-
 public class ChatMessage {
 
     private String id;
     private String text;
-    private String name;
+    private String sender;
     private String photoUrl;
 
     public ChatMessage() {
@@ -16,7 +12,7 @@ public class ChatMessage {
 
     public ChatMessage(String text, String name, String photoUrl) {
         this.text = text;
-        this.name = name;
+        this.sender = name;
         this.photoUrl = photoUrl;
     }
 
@@ -36,12 +32,12 @@ public class ChatMessage {
         return text;
     }
 
-    public String getName() {
-        return name;
+    public String getSender() {
+        return sender;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
     public String getPhotoUrl() {
