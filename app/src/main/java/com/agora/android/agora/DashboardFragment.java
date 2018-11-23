@@ -36,7 +36,7 @@ public class DashboardFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         mWelcomeMessage = (TextView) view.findViewById(R.id.welcome_message);
-        mWelcomeMessage.setText(mFirebaseUser.getDisplayName());
+        mWelcomeMessage.setText(mFirebaseUser.getUid());
 
         return view;
     }
