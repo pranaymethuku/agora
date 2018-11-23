@@ -130,7 +130,7 @@ public class AuthActivity extends AppCompatActivity implements GoogleApiClient.O
                             if (acct.getId() != null) {
                                 Log.i(TAG, "signInWithCredential: adding user to Firestore");
                                 mFirebaseFirestore.collection(USERS_CHILD)
-                                        .document(acct.getId())
+                                        .document(mFirebaseAuth.getCurrentUser().getUid())
                                         .set(user)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
